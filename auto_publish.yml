@@ -1,0 +1,27 @@
+
+name: Auto Publish Newsletter
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'  # Every Sunday at 4:00 PM EST (8:00 PM UTC)
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create or update index.html
+        run: |
+          echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Slow Stack Weekly</title></head><body><h1>This is a placeholder for the weekly newsletter.</h1></body></html>' > index.html
+
+      - name: Commit and push newsletter
+        run: |
+          git config --global user.name 'slowstack-bot'
+          git config --global user.email 'bot@slowstack.com'
+          git add index.html
+          git commit -m "Auto-publish weekly newsletter [skip ci]" || echo "No changes to commit"
+          git push
