@@ -1,0 +1,25 @@
+name: Auto Publish Newsletter
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'  # Every Sunday at 4:00 PM EST
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Copy latest to publish
+        run: cp index_latest.html index.html
+
+      - name: Commit and push newsletter
+        run: |
+          git config --global user.name 'slowstack-bot'
+          git config --global user.email 'bot@slowstack.com'
+          git add index.html
+          git commit -m "Auto-publish newsletter from index_latest.html [skip ci]" || echo "No changes to commit"
+          git push
