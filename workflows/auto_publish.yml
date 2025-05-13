@@ -14,11 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Copy newsletter draft to publish
-        run: |
-          cp index_latest.html index.html
+      - name: Copy latest to publish
+        run: cp index_latest.html index.html
 
-      - name: Commit and push index.html
+      - name: Commit and push newsletter
         run: |
           git config --global user.name 'slowstack-bot'
           git config --global user.email 'bot@slowstack.com'
